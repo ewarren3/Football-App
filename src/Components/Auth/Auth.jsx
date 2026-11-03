@@ -3,9 +3,12 @@
 import { useState } from "react";
 import AuthForm from "./AuthForm.jsx";
 import { createUser } from "../../Services/AuthService.js";
+import { Link, useNavigate } from "react-router-dom";
 // Buttons with some links to register and login
 
 const Auth = () => {
+    const navigate = useNavigate();
+    const [error, setError] = useState("");
 
     // JS object user that contains firstname, last,...etc
     const [user, setUser] = useState({
@@ -27,15 +30,20 @@ const Auth = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        setError("";)
 
         createUser(user)
             .then((result) => {
                 console.log("Registration successful:", result.id);
+                navigate("/", { replace: true });
             })
             .catch((error) => {
-                console.error("Registration failed:", error.message);
+                setError(error.message);
             });
+    
+            
     };
+
     
     return (
         <div>
@@ -47,6 +55,11 @@ const Auth = () => {
                 onChange={handleChange}
                 onSubmit={handleSubmit}
                 />
+            {error && <p role="alert">{error}</p>}
+            
+            <p>
+                Already have an account?<Link to="/login">Login Here</Link>
+            </p>
         </div>
     );
 }

@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import { getAllGames } from "../../Services/GameModel.js"
 import { useNavigate } from "react-router-dom";
 import GameList from "./MainList.jsx";
+import {
+  logoutUser,
+  getCurrentUser
+} from "../../Services/AuthService.js";
 
 // Stateful parent Home 
 const Home = () => {
@@ -20,6 +24,17 @@ const Home = () => {
     navigate(`/games/${game.id}`);
     };
 
+    const handleLogout = () => {
+    logoutUser()
+        .then(() => {
+            console.log("Current user after logout:", getCurrentUser());
+            navigate("/login", { replace: true });
+        })
+        .catch((error) => {
+            console.error("Logout failed:", error.message);
+        });
+      };
+
     useEffect(() => {
     getAllGames().then((games) => {
       setGames(games);
@@ -30,16 +45,16 @@ const Home = () => {
 
 
 
-const filteredGames = [...games] // copy so .sort() doesn't mutate state
-  .filter((g) => locationFilter === "All" || g.get("siteType") === locationFilter)
-  .filter((g) =>
-    (g.get("opponent") ?? "").toLowerCase().includes(searchTerm.toLowerCase())
-  )
-  .sort((a, b) =>
-    sortAscending
-      ? new Date(a.get("date")) - new Date(b.get("date"))
-      : new Date(b.get("date")) - new Date(a.get("date"))
-  );
+  const filteredGames = [...games] // copy so .sort() doesn't mutate state
+    .filter((g) => locationFilter === "All" || g.get("siteType") === locationFilter)
+    .filter((g) =>
+      (g.get("opponent") ?? "").toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) =>
+      sortAscending
+        ? new Date(a.get("date")) - new Date(b.get("date"))
+        : new Date(b.get("date")) - new Date(a.get("date"))
+    );
 
     // Future work: add more filters for season year and include results
     // from past games in the lists
@@ -50,6 +65,12 @@ return (
     {isLoaded && (
       <>
         <h1>Notre Dame Football Schedule</h1>
+        < br />
+
+        <button type="button" onClick={handleLogout}>
+            Log Out
+        </button>
+        
 
         {/* User can input opponent */}
         <input

@@ -1,3 +1,4 @@
+import { Link, useNavigate } from "react-router-dom";
 import {
     loginUser,
     logoutUser,
@@ -12,6 +13,10 @@ function AuthLogin() {
         email: "",
         password: ""
     });
+
+    const [error, setError] = useState("");
+
+    const navigate = useNavigate();
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -28,16 +33,18 @@ function AuthLogin() {
         loginUser(user.email, user.password) // Promise
             .then((result) => {
                 console.log("Login successful:", result.id);
+                navigate("/", { replace: true});
             })
             .catch((error) => {
-                console.error("Login failed:", error.message);
+                setError(error.message);
             });
     };
 
     const handleLogout = () => {
         logoutUser()
             .then(() => {
-                console.log("Logout sucessful");
+                console.log("Logout sucessful",);
+                navigate("/login", { replace: true });
             })
             .catch((error) => {
                 console.log("Logout failed:", error.message);
@@ -75,8 +82,14 @@ function AuthLogin() {
                 <br />
                 <button type="submit">Log In</button>
             </form>
+            {error && <p role="alert">{error}</p>}
 
             <button type="button" onClick={handleLogout}>Log Out</button>
+
+
+            <p>
+                Dont't have an account? <Link to="/auth">Register Here</Link>
+            </p>
         </div>
     );
 }
