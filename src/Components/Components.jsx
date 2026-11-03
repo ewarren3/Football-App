@@ -1,6 +1,7 @@
-
 import Main from "./Main/Home.jsx";
 import GameDetails from "./GameDetails/GameDetails.jsx";
+import Auth from "./Auth/Auth.jsx";
+import AuthLogin from "./Auth/AuthLogin.jsx";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 // Defines the different modules of the application
@@ -13,6 +14,11 @@ export default function Components() {
 
         {/* Route to the game details module */}
         <Route path="/games/:gameId" element={<GameDetails />} />
+
+        {/* Route to the auth form*/}
+        <Route path="/auth" element={<Auth />} />
+
+        <Route path="/login" element={<AuthLogin />} />
       </Routes>
     </Router>
   );
