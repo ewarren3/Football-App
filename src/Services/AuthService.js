@@ -15,9 +15,18 @@ export const createUser = (newUser) => {
 
 }
 
-
 // Log in an existing user using Parse
 export const loginUser = (email, password) => {
     return Parse.User.logIn(email, password);
+};
+
+// Log out the current user
+export const logoutUser = () => {
+    return Parse.User.logOut();
+}
+
+// Check which user is currently logged in
+export const getCurrentUser = () => {
+    return Parse.User.current();
 };
 

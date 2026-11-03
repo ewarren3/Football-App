@@ -1,6 +1,9 @@
-
+import {
+    loginUser,
+    logoutUser,
+    getCurrentUser
+} from "../../Services/AuthService.js";
 import { useState } from "react";
-import { loginUser } from "../../Services/AuthService.js";
 
 // Auth login only needsan email and a password
 function AuthLogin() {
@@ -28,6 +31,16 @@ function AuthLogin() {
             })
             .catch((error) => {
                 console.error("Login failed:", error.message);
+            });
+    };
+
+    const handleLogout = () => {
+        logoutUser()
+            .then(() => {
+                console.log("Logout sucessful");
+            })
+            .catch((error) => {
+                console.log("Logout failed:", error.message);
             });
     };
 
@@ -62,6 +75,8 @@ function AuthLogin() {
                 <br />
                 <button type="submit">Log In</button>
             </form>
+
+            <button type="button" onClick={handleLogout}>Log Out</button>
         </div>
     );
 }
