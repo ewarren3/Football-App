@@ -1,16 +1,60 @@
-# React + Vite
+# Notre Dame Football Schedule
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React application for viewing the Notre Dame football schedule, built with Vite and a Back4App (Parse) backend.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Football schedule loaded from a Parse database (Game and Location classes)
+- Search by opponent, Home/Away filtering, and chronological sorting
+- Game details page for each game
+- User registration and login with Parse authentication
+- Protected routes: the schedule and game details require login
+- Guest-only routes: logged-in users are redirected away from the login and register pages
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React with Vite
+- React Router
+- Parse SDK (Back4App)
 
-## Expanding the ESLint configuration
+## Routes
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+| Path | Access | Description |
+|------|--------|-------------|
+| `/` | Guests only | Landing page with Register and Login buttons |
+| `/login` | Guests only | Login form |
+| `/register` | Guests only | Registration form |
+| `/main` | Logged-in users | Football schedule |
+| `/games/:gameId` | Logged-in users | Game details |
+
+## Getting Started
+
+1. Clone the repository and install dependencies:
+   ```bash
+   npm install
+   ```
+2. Add your Back4App credentials (see Configuration below).
+3. Start the dev server:
+   ```bash
+   npm run dev
+   ```
+
+## Configuration
+
+Describe where the Parse application ID and JavaScript key are set (for example, a `.env` file or a Parse initialization file). Do not commit real keys to a public repository.
+
+## Project Structure
+
+```
+src/
+  Components/
+    Auth/              Auth, AuthForm, AuthLogin, AuthRegister
+    GameDetails/       Game details page
+    Main/              Home and MainList (schedule)
+    ProtectedRoute/    ProtectedRoute and GuestRoute
+  Services/            AuthService, GameModel, LocationModel
+```
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for the history of changes.
