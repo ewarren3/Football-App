@@ -1,67 +1,25 @@
 // Parent authentication component
-//import {Link} from "react-router-dom";
-import { useState } from "react";
-import AuthForm from "./AuthForm.jsx";
-import { createUser } from "../../Services/AuthService.js";
-import { Link, useNavigate } from "react-router-dom";
-// Buttons with some links to register and login
+import { useNavigate } from "react-router-dom";
 
+// Auth component serves as the landing page for the application, providing navigation to the registration and login forms.
 const Auth = () => {
     const navigate = useNavigate();
-    const [error, setError] = useState("");
 
-    // JS object user that contains firstname, last,...etc
-    const [user, setUser] = useState({
-        firstName: "",
-        lastName:"",
-        email:"",
-        password:""
-    });
-
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-
-        // spreader that aggregates what is being typed
-        setUser({
-            ...user,
-            [name]: value
-        });
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        setError("";)
-
-        createUser(user)
-            .then((result) => {
-                console.log("Registration successful:", result.id);
-                navigate("/", { replace: true });
-            })
-            .catch((error) => {
-                setError(error.message);
-            });
-    
-            
-    };
-
-    
     return (
         <div>
-            <h1>Notre Dame Football Ticket Register</h1>
-            <p>Create an account to continue.</p>
-
-            <AuthForm 
-                user={user}
-                onChange={handleChange}
-                onSubmit={handleSubmit}
-                />
-            {error && <p role="alert">{error}</p>}
-            
-            <p>
-                Already have an account?<Link to="/login">Login Here</Link>
-            </p>
+            <h1>Notre Dame Football Tickets</h1>
+            <button type="button" onClick={() => navigate("/register")}>
+                Register
+            </button>
+            <button type="button" onClick={() => navigate("/login")}>
+                Login
+            </button>
         </div>
     );
-}
+};
 
 export default Auth;
+
+// Future work: Consider adding a "Forgot Password" link to enhance user experience and account recovery options.
+// Future work: make it more as a landing page with a brief description of the application and its features, along with links to register or login.
+// Future work: make it more visually appealing with images or graphics related to Notre Dame football, and possibly a call-to-action button for registration or login.
