@@ -2,6 +2,26 @@
 
 All notable changes to the Notre Dame Football Schedule application are documented here.
 
+## 0.3.0
+
+## [Feature 5] — Authentication and Protected Routes
+
+### Added
+- Created an `Auth` landing component with Register and Login buttons that navigate to the corresponding routes.
+- Created `AuthRegister` to collect first name, last name, email, and password and register new users through Parse.
+- Created `AuthLogin` to authenticate existing users.
+- Created a reusable `AuthForm` component shared by the registration and login pages.
+- Created `AuthService.js` to handle Parse user creation, login, and current-user lookup.
+- Added a `ProtectedRoute` component that restricts the football schedule and game details pages to signed-in users.
+- Added a `GuestRoute` component that redirects signed-in users away from the landing, login, and register pages to the football schedule.
+- Added routes for `/login` and `/register` in `Components.jsx`.
+- Added error messages that display to the user when registration fails.
+
+### Changed
+- Moved registration logic (form state, submit handler, and redirect) out of `Auth` and into `AuthRegister`, so `Auth` now handles navigation only.
+- Wrapped the `/main` and `/games/:gameId` routes in `ProtectedRoute`.
+- Updated `Home`, `MainList`, `GameDetails`, and `GameModel.js` to work with the authentication flow.
+
 ## 0.0.1
 
 ### Added
