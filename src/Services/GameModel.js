@@ -13,17 +13,3 @@ export const getAllGames = () => {
 
 
 
-// export const getAllGames = async () => {
-//   const Game = Parse.Object.extend("Game");
-//   const query = new Parse.Query(Game);
-//   query.include("location");
-
-//   try {
-//     const result = await query.find();
-//     console.log("Loaded games:", result);
-//     return result;
-//   } catch (error) {
-//     console.error("Error loading games:", error);
-//     return [];
-//   }
-// };

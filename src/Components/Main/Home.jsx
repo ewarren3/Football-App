@@ -28,7 +28,7 @@ const Home = () => {
     logoutUser()
         .then(() => {
             console.log("Current user after logout:", getCurrentUser());
-            navigate("/login", { replace: true });
+            navigate("/", { replace: true });
         })
         .catch((error) => {
             console.error("Logout failed:", error.message);

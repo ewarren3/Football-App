@@ -2,6 +2,7 @@
     Recievers user, onChange, onSubmit as props (properties/props are info that a parent component passes to child component)
     Displays the four form inputs
 */
+
 const AuthForm = ({ user, onChange, onSubmit }) => { /*object destructuring, React passes the component one objejct containing its props */
   return (
     <div>
@@ -61,3 +62,5 @@ const AuthForm = ({ user, onChange, onSubmit }) => { /*object destructuring, Rea
 };
 
 export default AuthForm;
+
+// Future work: Consider adding password strength validation and a "show password" toggle to enhance user experience and security.

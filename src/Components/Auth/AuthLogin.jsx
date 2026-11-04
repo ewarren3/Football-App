@@ -1,3 +1,5 @@
+// This component handles user login functionality, including form input handling, submission, and error display. It uses React hooks for state management and navigation.
+
 import { Link, useNavigate } from "react-router-dom";
 import {
     loginUser,
@@ -33,7 +35,7 @@ function AuthLogin() {
         loginUser(user.email, user.password) // Promise
             .then((result) => {
                 console.log("Login successful:", result.id);
-                navigate("/", { replace: true});
+                navigate("/main", { replace: true});
             })
             .catch((error) => {
                 setError(error.message);
@@ -84,14 +86,16 @@ function AuthLogin() {
             </form>
             {error && <p role="alert">{error}</p>}
 
-            <button type="button" onClick={handleLogout}>Log Out</button>
+            {/* <button type="button" onClick={handleLogout}>Log Out</button> */}
 
 
             <p>
-                Dont't have an account? <Link to="/auth">Register Here</Link>
+                Dont't have an account? <Link to="/register">Register Here</Link>
             </p>
         </div>
     );
 }
 
 export default AuthLogin;
+
+// Future work: Consider adding a "Remember Me" option to persist user sessions and improve user experience.
