@@ -1,6 +1,7 @@
 # Notre Dame Football Schedule
 
 A React application for viewing the Notre Dame football schedule, built with Vite and a Back4App (Parse) backend.
+Katherine Comito and Eleanor Warren
 
 ## Features
 
