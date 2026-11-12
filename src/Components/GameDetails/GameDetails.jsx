@@ -60,7 +60,7 @@ function GameDetails() {
             <p>Location: {location?.get("stadium")}</p>
             <p>City: {location?.get("city")}, {location?.get("state")}</p>
 
-            <button onClick={() => navigate("/Main")}>
+            <button onClick={() => navigate("")}>
                 Back to Schedule
             </button>
 
