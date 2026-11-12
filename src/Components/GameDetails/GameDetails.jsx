@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getAllGames } from "../../Services/GameModel.js";
+import GameChat from "../GameChat/GameChat.jsx";
 
 function GameDetails() {
     const navigate = useNavigate();
@@ -62,6 +63,8 @@ function GameDetails() {
             <button onClick={() => navigate("/Main")}>
                 Back to Schedule
             </button>
+
+            <GameChat gameId={gameId} />
         </div>
     );
 }
