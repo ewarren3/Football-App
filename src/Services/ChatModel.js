@@ -25,3 +25,37 @@ export const getGameMessages = (gameId, phase = "pregame") => {
 
     return query.find();
 };
+
+
+// Create a new chat message for a selected game
+export const saveGameMessage = (gameId, message, phase = "pregame") => {
+    const currentUser = Parse.User.current();
+
+    // Only authenticated users can post comments
+    if (!currentUser) {
+        return Promise.reject(
+            new Error("You must be logged in to comment.")
+        );
+    }
+
+    // Prevent empty messages
+    if (!message.trim()) {
+        return Promise.reject(
+            new Error("Comment cannot be empty.")
+        );
+    }
+
+    const ChatMessage = Parse.Object.extend("ChatMessage");
+    const Game = Parse.Object.extend("Game");
+
+    const gamePointer = Game.createWithoutData(gameId);
+    const newMessage = new ChatMessage();
+
+    newMessage.set("game", gamePointer);
+    newMessage.set("author", currentUser);
+    newMessage.set("message", message.trim());
+    newMessage.set("phase", phase);
+
+    return newMessage.save();
+};
+
