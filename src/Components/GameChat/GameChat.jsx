@@ -9,7 +9,7 @@ import "./GameChat.css";
 
 import { getCurrentUser } from "../../Services/AuthService.js";
 
-const GameChat = ({ gameId }) => {
+const GameChat = ({ gameId, phase = "pregame" }) => {
 
     const [messages, setMessages] = useState([]);
     const [error, setError] = useState("");
@@ -20,7 +20,11 @@ const GameChat = ({ gameId }) => {
     const [acceptedGuidelines, setAcceptedGuidelines] = useState(false);
 
     useEffect(() => {
-        getGameMessages(gameId, "pregame")
+        // Clear the previous discussion when switching games or phases
+        setMessages([]);
+        setError("");
+
+        getGameMessages(gameId, phase)
             .then((results) => {
                 setMessages(results);
             })
@@ -28,7 +32,7 @@ const GameChat = ({ gameId }) => {
                 console.error("Failed to load messages:", error.message);
                 setError("Unable to load comments.");
             });
-    }, [gameId]);
+    }, [gameId, phase]);
 
     useEffect(() => {
     if (chatContainerRef.current) {
@@ -54,12 +58,12 @@ const GameChat = ({ gameId }) => {
         setError("");
 
         // Call the service to save the message in Back4App
-        saveGameMessage(gameId, newMessage, "pregame")
+        saveGameMessage(gameId, newMessage, phase)
             .then(() => {
                 setNewMessage("");
 
                 // Reload the comments after saving
-                return getGameMessages(gameId, "pregame");
+                return getGameMessages(gameId, phase);
             })
             .then((results) => {
                 setMessages(results);
@@ -82,7 +86,11 @@ const GameChat = ({ gameId }) => {
     
     return (
         <div className="game-chat">
-            <h2>Pregame Discussion</h2>
+            <h2>
+                {phase === "live"
+                    ? "The game has started! Chat live with other Notre Dame fans."
+                    : "Discuss the upcoming game with other Notre Dame fans!"}
+            </h2>
 
             {/* Display an error if the query fails */}
             {error && <p role="alert">{error}</p>}

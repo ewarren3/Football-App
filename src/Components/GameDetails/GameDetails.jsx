@@ -64,7 +64,10 @@ function GameDetails() {
                 Back to Schedule
             </button>
 
-            <GameChat gameId={gameId} />
+            <GameChat
+                gameId={gameId}
+                phase={game.get("chatPhase") || "pregame"}
+            />
         </div>
     );
 }
