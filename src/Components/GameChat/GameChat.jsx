@@ -17,29 +17,54 @@ const GameChat = ({ gameId, phase = "pregame" }) => {
     const currentUser = getCurrentUser();
     const chatContainerRef = useRef(null);
     const [showGuidelines, setShowGuidelines] = useState(false);
-    const [acceptedGuidelines, setAcceptedGuidelines] = useState(false);
+    const [acceptedGuidelines, setAcceptedGuidelines] = useState(
+        () => getCurrentUser()?.get("acceptedChatGuidelines") === true
+    );
 
+    
     useEffect(() => {
-        // Clear the previous discussion when switching games or phases
+        let active = true;
+
+        const loadMessages = () => {
+            getGameMessages(gameId, phase)
+                .then((results) => {
+                    if (active) {
+                        setMessages(results);
+                        setError("");
+                    }
+                })
+                .catch((error) => {
+                    if (active) {
+                        console.error("Failed to load messages:", error.message);
+                        setError("Unable to load comments.");
+                    }
+                });
+        };
+
+        // Clear messages from the previous game or phase
         setMessages([]);
         setError("");
 
-        getGameMessages(gameId, phase)
-            .then((results) => {
-                setMessages(results);
-            })
-            .catch((error) => {
-                console.error("Failed to load messages:", error.message);
-                setError("Unable to load comments.");
-            });
+        // Load immediately
+        loadMessages();
+
+        // Check for new comments every 5 seconds
+        const intervalId = setInterval(loadMessages, 5000);
+
+        // Stop polling when the component unmounts or changes games/phases
+        return () => {
+            active = false;
+            clearInterval(intervalId);
+        };
     }, [gameId, phase]);
 
-    useEffect(() => {
-    if (chatContainerRef.current) {
-        chatContainerRef.current.scrollTop =
-            chatContainerRef.current.scrollHeight;
-    }
-}, [messages]);
+
+        useEffect(() => {
+        if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTop =
+                chatContainerRef.current.scrollHeight;
+        }
+    }, [messages]);
 
     
     const handleSubmit = (event) => {
@@ -79,6 +104,30 @@ const GameChat = ({ gameId, phase = "pregame" }) => {
             setShowGuidelines(true);
         }
     };
+
+    const handleAcceptGuidelines = () => {
+        const user = getCurrentUser();
+
+        if (!user) {
+            setError("You must be logged in to accept the guidelines.");
+            return;
+        }
+
+        user.set("acceptedChatGuidelines", true);
+
+        user.save()
+            .then(() => {
+                setAcceptedGuidelines(true);
+                setShowGuidelines(false);
+            })
+            .catch((error) => {
+                console.error("Failed to save guidelines:", error.message);
+                setError("Unable to save your agreement. Please try again.");
+            });
+    };
+
+
+        
 
 
     
@@ -155,10 +204,7 @@ const GameChat = ({ gameId, phase = "pregame" }) => {
 
                     <button
                         type="button"
-                        onClick={() => {
-                            setAcceptedGuidelines(true);
-                            setShowGuidelines(false);
-                        }}
+                        onClick={handleAcceptGuidelines}
                     >
                         I Agree — Let's Chat!
                     </button>
