@@ -38,6 +38,35 @@ function GameDetails() {
             });
     }, [gameId]);
 
+
+    useEffect(() => {
+        // Check for changes to the game's chat phase
+        const checkGamePhase = () => {
+            getAllGames()
+                .then((games) => {
+                    const updatedGame = games.find(
+                        (g) => String(g.id) === gameId
+                    );
+
+                    if (updatedGame) {
+                        setGame(updatedGame);
+                    }
+                })
+                .catch((error) => {
+                    console.error("Failed to check game phase:", error.message);
+                });
+        };
+
+        // Check every five seconds
+        const intervalId = setInterval(checkGamePhase, 5000);
+
+        // Stop checking when leaving the game details page
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, [gameId]);
+
+
     if (isLoading) {
         return <p>Loading game details...</p>;
     }
@@ -65,6 +94,7 @@ function GameDetails() {
             </button>
 
             <GameChat
+                key={`${gameId}-${game.get("chatPhase") || "pregame"}`}
                 gameId={gameId}
                 phase={game.get("chatPhase") || "pregame"}
             />
