@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getAllGames } from "../../Services/GameModel.js";
+import GameChat from "../GameChat/GameChat.jsx";
 
 function GameDetails() {
     const navigate = useNavigate();
@@ -37,6 +38,35 @@ function GameDetails() {
             });
     }, [gameId]);
 
+
+    useEffect(() => {
+        // Check for changes to the game's chat phase
+        const checkGamePhase = () => {
+            getAllGames()
+                .then((games) => {
+                    const updatedGame = games.find(
+                        (g) => String(g.id) === gameId
+                    );
+
+                    if (updatedGame) {
+                        setGame(updatedGame);
+                    }
+                })
+                .catch((error) => {
+                    console.error("Failed to check game phase:", error.message);
+                });
+        };
+
+        // Check every five seconds
+        const intervalId = setInterval(checkGamePhase, 5000);
+
+        // Stop checking when leaving the game details page
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, [gameId]);
+
+
     if (isLoading) {
         return <p>Loading game details...</p>;
     }
@@ -59,9 +89,15 @@ function GameDetails() {
             <p>Location: {location?.get("stadium")}</p>
             <p>City: {location?.get("city")}, {location?.get("state")}</p>
 
-            <button onClick={() => navigate("/Main")}>
+            <button onClick={() => navigate("/")}>
                 Back to Schedule
             </button>
+
+            <GameChat
+                key={`${gameId}-${game.get("chatPhase") || "pregame"}`}
+                gameId={gameId}
+                phase={game.get("chatPhase") || "pregame"}
+            />
         </div>
     );
 }

@@ -3,7 +3,6 @@ import GameDetails from "./GameDetails/GameDetails.jsx";
 import Auth from "./Auth/Auth.jsx";
 import AuthLogin from "./Auth/AuthLogin.jsx";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import ProtectedRoute from "./ProtectedRoute/ProtectedRoute.jsx";
 import GuestRoute from "./ProtectedRoute/GuestRoute.jsx";
 import AuthRegister from "./Auth/AuthRegister.jsx";
 
@@ -13,13 +12,16 @@ export default function Components() {
     <Router>
       <Routes>
         {/* Route to the football schedule */}
-        <Route path="/main" element={<ProtectedRoute element={Main} />} />
+        <Route path="/" element={<Main />} />
+
+        {/* Route to the public football schedule */}
+        <Route path="/main" element={<Main />} />
 
         {/* Route to the game details module */}
-        <Route path="/games/:gameId" element={<ProtectedRoute element={GameDetails} />} />
+        <Route path="/games/:gameId" element={<GameDetails />} />
 
         {/* Route to the auth landing page (guests only) */}
-        <Route path="/" element={<GuestRoute element={Auth} />} />
+        <Route path="/auth" element={<GuestRoute element={Auth} />} />
 
         {/* Route to the login form (guests only) */}
         <Route path="/login" element={<GuestRoute element={AuthLogin} />} />

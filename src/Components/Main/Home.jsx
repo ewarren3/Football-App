@@ -10,6 +10,7 @@ import {
 // Stateful parent Home 
 const Home = () => {
     const navigate = useNavigate();
+    const [currentUser, setCurrentUser] = useState(getCurrentUser());
     const [games, setGames] = useState([]);
     const [locationFilter, setLocationFilter] = useState("All");
     const [searchTerm, setSearchTerm] = useState("");
@@ -25,15 +26,15 @@ const Home = () => {
     };
 
     const handleLogout = () => {
-    logoutUser()
-        .then(() => {
-            console.log("Current user after logout:", getCurrentUser());
-            navigate("/", { replace: true });
-        })
-        .catch((error) => {
-            console.error("Logout failed:", error.message);
-        });
-      };
+      logoutUser()
+          .then(() => {
+              setCurrentUser(null);
+              navigate("/", { replace: true });
+          })
+          .catch((error) => {
+              console.error("Logout failed:", error.message);
+          });
+  };
 
     useEffect(() => {
     getAllGames().then((games) => {
@@ -67,10 +68,16 @@ return (
         <h1>Notre Dame Football Schedule</h1>
         < br />
 
-        <button type="button" onClick={handleLogout}>
-            Log Out
-        </button>
-        
+        {currentUser ? (
+          <button type="button" onClick={handleLogout}>
+              Log Out
+          </button>
+      ) : (
+          <button type="button" onClick={() => navigate("/login")}>
+              Log In
+          </button>
+      )}
+            
 
         {/* User can input opponent */}
         <input
