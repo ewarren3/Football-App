@@ -163,9 +163,9 @@ const AwayGameMap = ({ games }) => {
                         Close
                     </button>
                 </div>
-            )}
-        </div> {/* Closes map-container */}
-    </div>     {/* Closes away-game-map */}
+                )}
+        </div>
+    </div>
     );
 };
 
