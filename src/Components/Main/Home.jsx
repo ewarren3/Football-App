@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getAllGames } from "../../Services/GameModel.js"
 import { useNavigate } from "react-router-dom";
 import GameList from "./MainList.jsx";
+import AwayGameMap from "../AwayGameMap/AwayGameMap.jsx";
 import {
   logoutUser,
   getCurrentUser
@@ -106,6 +107,7 @@ return (
           games={filteredGames}
           onSelectGame={handleSelectGame}
         />
+        <AwayGameMap games={games}/>
       </>
     )}
   </div>
