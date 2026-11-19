@@ -1,0 +1,11 @@
+.away-game-map {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.away-game-map svg {
+    width: 100%;
+    height: auto;
+}
