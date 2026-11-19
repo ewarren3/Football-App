@@ -107,7 +107,7 @@ return (
           games={filteredGames}
           onSelectGame={handleSelectGame}
         />
-        <AwayGameMap />
+        <AwayGameMap games={games}/>
       </>
     )}
   </div>

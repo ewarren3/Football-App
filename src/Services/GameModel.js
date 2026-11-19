@@ -5,6 +5,8 @@ export const getAllGames = () => {
   const Game = Parse.Object.extend("Game");
   const query = new Parse.Query(Game);
 
+  query.include("location");
+
   return query.find().then((result) => {
       console.log("Loaded games:", result);
     return result;
